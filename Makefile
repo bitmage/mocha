@@ -1,6 +1,5 @@
 
 REPORTER ?= dot
-TM_DEST = ~/Library/Application\ Support/TextMate/Bundles
 TM_BUNDLE = JavaScript\ mocha.tmbundle
 SRC = $(shell find lib -name "*.js" -type f | sort)
 SUPPORT = $(wildcard support/*.js)
@@ -33,7 +32,7 @@ lib-cov:
 
 test: test-unit
 
-test-all: test-bdd test-tdd test-qunit test-exports test-unit test-grep test-jsapi test-compilers
+test-all: test-bdd test-tdd test-qunit test-exports test-unit test-grep test-jsapi test-compilers test-glob
 
 test-jsapi:
 	@node test/jsapi
@@ -42,6 +41,7 @@ test-unit:
 	@./bin/mocha \
 		--reporter $(REPORTER) \
 		test/acceptance/*.js \
+		--growl \
 		test/*.js
 
 test-compilers:
@@ -100,6 +100,9 @@ test-async-only:
 	  --async-only \
 	  test/acceptance/misc/asyncOnly
 
+test-glob:
+	@./test/acceptance/glob/glob.sh
+
 non-tty:
 	@./bin/mocha \
 		--reporter dot \
@@ -123,7 +126,6 @@ non-tty:
 	@cat /tmp/spec.out
 
 tm:
-	mkdir -p $(TM_DEST)
-	cp -fr editors/$(TM_BUNDLE) $(TM_DEST)
+	@open editors/$(TM_BUNDLE)
 
 .PHONY: test-cov test-jsapi test-compilers watch test test-all test-bdd test-tdd test-qunit test-exports test-unit non-tty test-grep tm clean
