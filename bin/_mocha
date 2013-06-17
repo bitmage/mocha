@@ -276,7 +276,7 @@ files = files.map(function(path){
 
 // --watch
 
-if (program.watch) {
+if (false) {
   console.log();
   hideCursor();
   process.on('SIGINT', function(){
